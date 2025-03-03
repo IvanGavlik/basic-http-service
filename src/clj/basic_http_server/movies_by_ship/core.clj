@@ -42,7 +42,7 @@
 
 (def db-pool
   (hikari/make-datasource
-    {:jdbc-url     "jdbc:postgresql://localhost:4444/thedbitself"
+    {:jdbc-url     "jdbc:postgresql://localhost:5432/thedbitself"
      :username     "thedbuser"
      :password     "thedbpassword"
      :maximum-pool-size 10}))
