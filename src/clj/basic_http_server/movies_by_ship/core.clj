@@ -42,7 +42,7 @@
 
 (def db-pool
   (hikari/make-datasource
-    {:jdbc-url     "jdbc:postgresql://localhost:5432/thedbitself"
+    {:jdbc-url     "jdbc:postgresql://localhost:4444/thedbitself"
      :username     "thedbuser"
      :password     "thedbpassword"
      :maximum-pool-size 10}))
@@ -77,8 +77,9 @@
 (defn save-in-db [ship-name movies]
   (cond
     (not-empty movies) (map (fn [m] (db/create-movies! ds {:ship_name ship-name :movie_name m})) movies)
-    :else   (db/create-movies! ds {:ship_name ship-name :movie_name ""} movies)
+    :else   (db/create-movies! ds {:ship_name ship-name :movie_name ""} )
     )
+  (println "saved" (not-empty movies)   (map (fn [m] (db/create-movies! ds {:ship_name ship-name :movie_name m})) movies))
   ;; TODO refactor to save in BD in one call
   )
 
@@ -90,7 +91,7 @@
         movies (if not-in-db? (fetch-movies-service name) movies-from-db)
         ]
     (do
-      (if not-in-db? (save-in-db name movies) ) ;; TODO make it parallel
+      (if not-in-db? (save-in-db name movies))
       {:status 200
        :body movies
        }
