@@ -76,10 +76,9 @@
 
 (defn save-in-db [ship-name movies]
   (cond
-    (not-empty movies) (map (fn [m] (db/create-movies! ds {:ship_name ship-name :movie_name m})) movies)
-    :else   (db/create-movies! ds {:ship_name ship-name :movie_name ""} )
+    (empty? movies) (db/create-movies! ds {:ship_name ship-name :movie_name ""}) ;;
+    :else (doall (map (fn [m] (db/create-movies! ds {:ship_name ship-name :movie_name m}) m) movies))
     )
-  (println "saved" (not-empty movies)   (map (fn [m] (db/create-movies! ds {:ship_name ship-name :movie_name m})) movies))
   ;; TODO refactor to save in BD in one call
   )
 
