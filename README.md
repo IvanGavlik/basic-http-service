@@ -31,3 +31,14 @@ To start a web server for the application, run:
 Web server running on [http://localhost:3333/](http://localhost:3333/).
 
 REPL running on port 7000
+
+endpoint 
+    GET name 
+    return 
+
+calling external service 
+
+search all that match name of the ship
+search all the pilots in ship
+seatch all the pilots mnoives 
+return movie titles

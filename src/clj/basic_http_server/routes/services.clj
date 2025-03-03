@@ -9,7 +9,10 @@
     [reitit.ring.middleware.parameters :as parameters]
     [basic-http-server.middleware.formats :as formats]
     [ring.util.http-response :refer :all]
-    [clojure.java.io :as io]))
+    [basic-http-server.movies-by-ship.core :as movies]
+    [cheshire.core :refer :all]
+    [clojure.set :refer :all]
+    ))
 
 (defn service-routes []
   ["/api"
@@ -31,7 +34,8 @@
                  ;; coercing request parameters
                  coercion/coerce-request-middleware
                  ;; multipart
-                 multipart/multipart-middleware]}
+                 multipart/multipart-middleware
+                 ]}
 
    ;; swagger documentation
    ["" {:no-doc true
@@ -49,6 +53,13 @@
    ["/ping"
     {:get (constantly (ok {:message "pong"}))}]
 
+   ["/movies"
+    {:get {
+           :parameters {:query {:name string?}}
+           :handler movies/handle-movies }
+     }
+    ]
+
    ["/math"
     {:swagger {:tags ["math"]}}
 
@@ -65,3 +76,5 @@
              :handler (fn [{{{:keys [x y]} :body} :parameters}]
                         {:status 200
                          :body {:total (+ x y)}})}}]]])
+
+
